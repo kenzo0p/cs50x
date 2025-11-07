@@ -1,61 +1,105 @@
 #include <stdio.h>
 
-int main() {
-    char pro[10]={'A','B','C','D','E','F','G','H','I','J'}, seq[10];
-    int avlbl[10], resrc[10], max[10][10], alloc[10][10], need[10][10];
-    int i,j, proc, res, count=0, temp[10], executed;
-    printf("ENTER THE NO. OF PROCESS = ");
-    scanf("%d",&proc);
-    printf("ENTER THE NO. OF RESOURCE TYPES = ");
-    scanf("%d",&res);
-    for(i=0;i<proc;i++) temp[i]=0;
-    printf("ENTER THE ALLOCATION MATRIX:\n");
-    for(i=0;i<proc;i++){
-        printf("FOR PROCESS %c: ",pro[i]);
-        for(j=0;j<res;j++) scanf("%d",&alloc[i][j]);
-    }
-    printf("ENTER THE MAXIMUM MATRIX:\n");
-    for(i=0;i<proc;i++){
-        printf("FOR PROCESS %c: ",pro[i]);
-        for(j=0;j<res;j++) scanf("%d",&max[i][j]);
-    }
-    for(i=0;i<proc;i++){
-        for(j=0;j<res;j++){
+int main()
+{
+    int n, r, i, j, k;
+    printf("Enter number of processes: ");
+    scanf("%d",&n);
+
+    printf("Enter number of resources: ");
+    scanf("%d",&r);
+
+    int alloc[n][r], max[n][r], avail[r];
+
+    printf("Enter Allocation Matrix:\n");
+    for(i=0;i<n;i++)
+        for(j=0;j<r;j++)
+            scanf("%d",&alloc[i][j]);
+
+    printf("Enter Max Matrix:\n");
+    for(i=0;i<n;i++)
+        for(j=0;j<r;j++)
+            scanf("%d",&max[i][j]);
+
+    printf("Enter Available Resources:\n");
+    for(i=0;i<r;i++)
+        scanf("%d",&avail[i]);
+
+    int f[n], ans[n], ind = 0;
+
+    for(i=0;i<n;i++)
+        f[i] = 0;
+
+    int need[n][r];
+    for(i=0;i<n;i++)
+        for(j=0;j<r;j++)
             need[i][j] = max[i][j] - alloc[i][j];
-        }
-    }
-    printf("ENTER TOTAL INSTANCES OF EACH RESOURCE: ");
-    for(i=0;i<res;i++) scanf("%d",&resrc[i]);
-    for(i=0;i<res;i++){
-        avlbl[i]=resrc[i];
-        for(j=0;j<proc;j++) avlbl[i]-=alloc[j][i];
-    }
-    while(count < proc){
-        executed = 0;
-        for(i=0;i<proc;i++){
-            if(temp[i]==0){
+
+    for(k=0;k<n;k++)
+    {
+        int executed = 0;
+        for(i=0;i<n;i++)
+        {
+            if(f[i] == 0)
+            {
                 int flag = 0;
-                for(j=0;j<res;j++){
-                    if(avlbl[j]<need[i][j]){
-                        flag=1;
+                for(j=0;j<r;j++)
+                {
+                    if(need[i][j] > avail[j])
+                    {
+                        flag = 1;
                         break;
                     }
                 }
-                if(flag==0){
-                    printf("Process %c executed\n",pro[i]);
-                    for(j=0;j<res;j++) avlbl[j]+=alloc[i][j];
-                    temp[i]=1;
-                    seq[count++] = pro[i];
+
+                if(flag == 0)
+                {
+                    ans[ind++] = i;
+                    for(j=0;j<r;j++)
+                        avail[j] += alloc[i][j];
+                    f[i] = 1;
                     executed = 1;
                 }
             }
         }
-        if(executed==0){
-            printf("System is NOT in safe state\n");
+
+        if(executed == 0) // nothing executed this cycle → UNSAFE
+        {
+            printf("\nSystem NOT in safe state (Deadlock Possible)\n");
             return 0;
         }
     }
-    printf("System is in SAFE state\nSafe sequence: ");
-    for(i=0;i<proc;i++) printf("%c ", seq[i]);
+
+    printf("\nSystem is in SAFE state.\nSAFE Sequence: ");
+    for(i=0; i<n; i++)
+    {
+        printf("P%d", ans[i]);
+        if(i != n-1)
+            printf(" -> ");
+    }
+    printf("\n");
+
     return 0;
-}
+} 
+
+
+/*
+    Enter number of processes: 3
+Enter number of resources: 3
+
+Enter Allocation Matrix:
+0 1 0
+2 0 0
+3 0 2
+
+Enter Max Matrix:
+7 5 3
+3 2 2
+9 0 5
+
+Enter Available Resources:
+3 3 2
+
+total -> 8,4, 4
+
+*/
