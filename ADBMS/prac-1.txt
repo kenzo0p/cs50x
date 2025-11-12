@@ -1,0 +1,63 @@
+use hospitalDB;
+db.patients.drop();
+db.patients.insertMany([
+  {
+    name: "Rahul Sharma", patient_id: 201, disease: "Fever", bills: [1200, 800, 500],
+    address: { city: "Pune", pincode: 411001 }, admitted: true
+  },
+  {
+    name: "Priya Desai", patient_id: 202, disease: "Diabetes", bills: [2500, 1800, 2200],
+    address: { city: "Mumbai", pincode: 400001 }, admitted: false
+  },
+  {
+    name: "Arjun Mehta", patient_id: 203, disease: "Asthma", bills: [900, 1100, 750],
+    address: { city: "Nashik", pincode: 422001 }, admitted: true
+  }
+]);
+db.patients.deleteOne({ patient_id: 203 });
+db.patients.deleteMany({ disease: "Asthma" });
+db.patients.replaceOne(
+  { patient_id: 201 },
+  {
+    name: "Rahul Sharma", patient_id: 201, disease: "Malaria", bills: [1500, 1700],
+    address: { city: "Nagpur", pincode: 440001 }, admitted: true
+  }
+);
+db.patients.updateOne({ patient_id: 202 }, { $set: { admitted: true } });
+db.patients.updateOne({ patient_id: 202 }, { $inc: { "bills.0": 300 } });
+db.patients.updateOne({ patient_id: 202 }, { $push: { bills: 2900 } });
+db.patients.updateOne(
+  { patient_id: 204 },
+  {
+    $set: {
+      name: "Aarti Patil",
+      disease: "Migraine",
+      bills: [1000, 1200],
+      address: { city: "Kolhapur", pincode: 416001 },
+      admitted: false
+    }
+  },
+  { upsert: true }
+);
+db.patients.updateMany(
+  { disease: { $ne: null } },
+  { $set: { admitted: true } }
+);
+db.patients.findOneAndUpdate(
+  { patient_id: 202 },
+  { $set: { disease: "Heart Checkup" } },
+  { returnNewDocument: true }
+);
+db.patients.find();
+db.patients.findOne({ patient_id: 201 });
+db.patients.find({ "bills.0": { $gt: 1000 } });
+db.patients.find({ $or: [ { admitted: true }, { "address.city": "Mumbai" } ] });
+db.patients.find({ name: { $not: { $eq: "Rahul Sharma" } } });
+db.patients.find({ "address.city": null });
+db.patients.find({ name: { $regex: "^P" } });
+db.patients.find({ bills: { $all: [800, 500] } });
+db.patients.find({ $where: "this.bills[0] + this.bills[1] > 2500" });
+db.patients.find().limit(2);
+db.patients.find().skip(1);
+db.patients.find().sort({ name: 1 });
+db.patients.find().sort({ "bills.0": -1 });
