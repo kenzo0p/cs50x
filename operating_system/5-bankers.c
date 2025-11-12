@@ -100,6 +100,6 @@ Enter Max Matrix:
 Enter Available Resources:
 3 3 2
 
-total -> 8,4, 4
+total -> 8,4 ,4
 
 */
