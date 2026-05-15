@@ -1,3 +1,0 @@
-Unix is an open-source OS
-Unix is powerful and flexible
-Many servers run Unix
