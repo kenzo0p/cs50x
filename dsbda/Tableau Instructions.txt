@@ -1,0 +1,96 @@
+Tableau Instructions
+
+A. 1D (Linear) Data Visualization
+Objective
+Visualize a single variable distribution.
+
+Example
+Histogram of Age (Adult Dataset)
+
+Steps
+1.Open a new worksheet
+2.Drag Age to Columns
+3.Tableau automatically creates bins
+4.Drag Number of Records to Rows
+5.Select Show Me → Histogram
+
+B. 2D (Planar) Data Visualization
+Objective
+Show relationship between two variables.
+
+Example
+Scatter Plot between Sepal Length and Petal Length.
+
+Steps
+1.Open worksheet
+2.Drag Sepal Length → Columns
+3.Drag Petal Length → Rows
+4.Drag Species → Color
+5.Choose Scatter Plot
+
+C. 3D (Volumetric) Data Visualization
+Tableau does not support true 3D graphs directly, but we can simulate 3D visualization.
+
+Example
+Bubble Chart using:
+X-axis
+Y-axis
+Bubble Size
+
+Steps
+1.Drag Sepal Length → Columns
+2.Drag Sepal Width → Rows
+3.Drag Petal Length → Size
+4.Drag Species → Color
+5.Select Packed Bubble or Scatter Plot
+
+D. Temporal Data Visualization
+Objective
+Visualize changes over time.
+Since Adult and Iris datasets do not contain time fields, create a sample time field.
+
+1.Create Date Field
+2.In Data Pane:
+Right-click
+ Create Calculated Field
+ Name: Date
+ Formula: DATEADD('day', INDEX(), #2024-01-01#)
+3.Create Line Chart
+4.Drag Date → Columns
+5.Drag Age → Rows
+6.Change aggregation to AVG
+7.Choose Line Chart
+
+E. Multidimensional Data Visualization
+Objective
+Visualize multiple dimensions simultaneously.
+
+Example
+Heatmap using:
+Education
+Occupation
+Income
+
+Steps
+1.Drag Education → Rows
+2.Drag Occupation → Columns
+3.Drag AVG(Hours-per-week) → Color
+4.Drag Income → Label
+5.Select Heat Map
+
+F. Tree / Hierarchical Data Visualization
+Objective
+Represent hierarchical structure.
+
+Example
+Treemap for Occupation and Income.
+
+Steps
+1.Drag Occupation → Label
+2.Drag Income → Color
+3.Drag Number of Records → Size
+4.Select Treemap
+
+
+G. Network check ss
+
